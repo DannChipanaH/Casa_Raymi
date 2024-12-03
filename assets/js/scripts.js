@@ -52,6 +52,7 @@ $(document).ready(function () {
         $('#tblCarrito').html('');
         $('#total_pagar').text('0.00');
     })
+    
     //categoria
     $('#abrirCategoria').click(function(){
         $('#categorias').modal('show');
@@ -66,6 +67,7 @@ $(document).ready(function () {
             this.submit();
         }
     })
+    
 });
 
 function mostrar(){
@@ -76,3 +78,35 @@ function mostrar(){
         }
     }
 }
+
+// En scripts.js o en un archivo separado de JavaScript
+function realizarPedido() {
+    if (localStorage.getItem("productos") != null) {
+      let array = JSON.parse(localStorage.getItem('productos'));
+      if (array.length > 0) {
+        $.ajax({
+          url: 'ajax.php',
+          type: 'POST',
+          data: {
+            action: 'realizar_pedido', // Una acción para indicar al servidor que se está realizando un pedido
+            data: array
+          },
+          success: function(response) {
+            // Aquí puedes redirigir a una página de éxito o mostrar un mensaje de éxito al usuario
+            console.log("Pedido realizado con éxito");
+            // Por ejemplo:
+            window.location.href = 'pedido_success.php';
+          },
+          error: function(error) {
+            // Aquí puedes redirigir a una página de error o mostrar un mensaje de error al usuario
+            console.log("Error al realizar el pedido");
+            // Por ejemplo:
+            window.location.href = 'pedido_error.php';
+          }
+        });
+      }
+    }
+  }
+
+  
+  

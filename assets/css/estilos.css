@@ -134,3 +134,42 @@ right: 20px;
     background-color: #e2e6ea; /* Color de fondo del botón al pasar el cursor */
 }
 
+/* Estilos para el pie de página */
+footer {
+    background-color: #ffffff; /* Color de fondo del pie de página */
+    padding: 20px 0; /* Espaciado interno */
+}
+
+footer p {
+    margin: 0;
+}
+
+footer a {
+    color: #f8f9fc; /* Color del texto del pie de página */
+}
+
+footer a:hover {
+    color: #e2e6ea; /* Color del texto del pie de página al pasar el cursor */
+}
+
+footer i {
+    font-size: 1.2rem; /* Tamaño de los íconos del pie de página */
+    margin-right: 15px; /* Espaciado entre íconos del pie de página */
+}
+
+/* Estilos para el botón de ir arriba */
+a.backToTopBtn {
+    position: fixed; /* Fijar en la ventana */
+    bottom: 20px; /* Espaciado desde abajo */
+    right: 20px; /* Espaciado desde la derecha */
+    width: 50px; /* Ancho del botón */
+    height: 50px; /* Alto del botón */
+    background-color: #ff2e63; /* Color de fondo del botón */
+    color: #fff; /* Color del texto del botón */
+    border-radius: 50%; /* Borde curvo del botón */
+    font-size: 1.5rem; /* Tamaño del texto del botón */
+    text-align: center; /* Alineación del texto */
+    line-height: 46px; /* Espaciado entre líneas del texto */
+    transition: 0.3s; /* Transición suave al pasar el cursor */
+    z-index: 99; /* Para que el botón se muestre por encima de todo */
+}

@@ -24,7 +24,6 @@ if (isset($_GET)) {
         else{
             header('Location: index.php');
         }
-
     }
 }
 ?>

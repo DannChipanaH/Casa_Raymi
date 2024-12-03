@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Shuriken Tacna</title>
+    <title>Casa Raymi</title>
     <!-- Favicon-->
     <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
     <!-- Bootstrap icons-->
@@ -23,7 +23,7 @@
     <div class="container">
         <nav class="navbar navbar-expand-lg navbar-light">
             <div class="container-fluid">
-                <img src="assets/img/logo.png" alt="Logo" style="width: 140px;">
+                <img src="assets/img/logo1.png" alt="Logo" style="width: 140px;">
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -49,7 +49,13 @@
                         <li class="nav-item">
                             <a class="nav-link" href="admin/index.php">Login</a>
                         </li>
-
+                        <li class="nav-item">
+                            <a class="nav-link" href="contactenos.php">
+                                <button style="background-color: #ff9900; color: #ffffff; border: none; padding: 10px 20px; border-radius: 5px; font-size: 16px; font-weight: bold;">
+                                    Contáctenos
+                                </button>
+                            </a>
+                        </li>
 
 
                     </ul>
@@ -146,7 +152,7 @@
     <!-- Footer-->
     <footer class="py-5 bg-dark">
         <div class="container">
-            <p class="m-0 text-center text-white">Copyright &copy; Derechos reservados para GRUPO 12 3ER AÑO ESIS 2023</p>
+            <p class="m-0 text-center text-white">Copyright &copy;  Derechos reservados para GRUPO 02    TACNA-2024</p>
         </div>
     </footer>
     <!-- Bootstrap core JS-->

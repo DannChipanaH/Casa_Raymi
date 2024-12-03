@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.1.1
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 29-07-2023 a las 18:08:52
--- Versión del servidor: 10.4.28-MariaDB
--- Versión de PHP: 8.2.4
+-- Tiempo de generación: 03-12-2024 a las 04:28:57
+-- Versión del servidor: 10.4.22-MariaDB
+-- Versión de PHP: 8.0.15
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de datos: `bd_shuriken`
+-- Base de datos: `bd_raymi`
 --
 
 -- --------------------------------------------------------
@@ -32,7 +32,7 @@ CREATE TABLE `carrito_compras` (
   `id_cliente` int(11) DEFAULT NULL,
   `id_producto` int(11) DEFAULT NULL,
   `cantidad` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -43,17 +43,16 @@ CREATE TABLE `carrito_compras` (
 CREATE TABLE `categorias` (
   `id` int(11) NOT NULL,
   `categoria` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Volcado de datos para la tabla `categorias`
 --
 
 INSERT INTO `categorias` (`id`, `categoria`) VALUES
-(10, 'Comic'),
-(11, 'Manga'),
-(12, 'Figuras'),
-(13, 'Funko');
+(15, 'Cama '),
+(16, 'Tarima'),
+(17, 'Colchon');
 
 -- --------------------------------------------------------
 
@@ -67,7 +66,14 @@ CREATE TABLE `clientes` (
   `direccion` varchar(200) DEFAULT NULL,
   `correo_electronico` varchar(100) DEFAULT NULL,
   `telefono` varchar(20) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `clientes`
+--
+
+INSERT INTO `clientes` (`id_cliente`, `nombre`, `direccion`, `correo_electronico`, `telefono`) VALUES
+(12, 'dann', 'techo propio', 'dannchipana@gmail.com', '959789115');
 
 -- --------------------------------------------------------
 
@@ -81,7 +87,7 @@ CREATE TABLE `detalle_ventas` (
   `id_producto` int(11) DEFAULT NULL,
   `cantidad` int(11) NOT NULL,
   `subtotal` decimal(10,2) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -93,7 +99,7 @@ CREATE TABLE `inventario` (
   `id_inventario` int(11) NOT NULL,
   `id_producto` int(11) DEFAULT NULL,
   `cantidad_disponible` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -104,7 +110,63 @@ CREATE TABLE `inventario` (
 CREATE TABLE `metodos_pago` (
   `id_metodo_pago` int(11) NOT NULL,
   `metodo` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `pedidos`
+--
+
+CREATE TABLE `pedidos` (
+  `id_pedido` int(11) NOT NULL,
+  `nombre` varchar(100) NOT NULL,
+  `apellido` varchar(100) NOT NULL,
+  `correo_electronico` varchar(150) NOT NULL,
+  `telefono` varchar(20) NOT NULL,
+  `direccion` text NOT NULL,
+  `tipo_pago` int(11) NOT NULL,
+  `total_pagar` decimal(10,2) NOT NULL,
+  `fecha_pedido` timestamp NOT NULL DEFAULT current_timestamp(),
+  `estado` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `pedidos`
+--
+
+INSERT INTO `pedidos` (`id_pedido`, `nombre`, `apellido`, `correo_electronico`, `telefono`, `direccion`, `tipo_pago`, `total_pagar`, `fecha_pedido`, `estado`) VALUES
+(1, 'Dann Tito', 'Chipana Hurcusi', 'Dannchipana@gmail.com', '959789115', 'Conjunto Hab. Jorge Basadre Grohmann', 2, '0.00', '2024-11-29 18:21:24', 'Pendiente'),
+(2, 'marina', 'adco', 'dada@gmail.com', '941914881', 'talara', 2, '0.00', '2024-11-29 18:25:46', 'Entregado'),
+(3, 'jhon', 'kevin', 'k@gmail.com', '777777777', 'taratajuntoaasociacion', 1, '3497.00', '2024-12-03 01:16:22', 'Pendiente'),
+(4, 'maumaumau', 'stardew', 'std@gmail.com', '9999999999', 'arequipa', 1, '18241.00', '2024-12-03 02:45:43', 'Entregado'),
+(5, 'sabay', 'gonzalo', 'sgs@gmail.com', '999555888', 'techopropio', 1, '12296.00', '2024-12-03 03:15:31', 'Enviado'),
+(6, 'laia', 'maldini', 'dtjorge@gmail.com', '96897653', 'moquegua', 1, '4895.00', '2024-12-03 03:23:55', 'Entregado');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `pedidos_clientes`
+--
+
+CREATE TABLE `pedidos_clientes` (
+  `id` int(11) NOT NULL,
+  `id_pedido` int(11) NOT NULL,
+  `id_cliente` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `pedidos_productos`
+--
+
+CREATE TABLE `pedidos_productos` (
+  `id` int(11) NOT NULL,
+  `id_pedido` int(11) NOT NULL,
+  `id_producto` int(11) NOT NULL,
+  `cantidad` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -121,40 +183,17 @@ CREATE TABLE `productos` (
   `cantidad` int(11) NOT NULL,
   `imagen` varchar(50) NOT NULL,
   `id_categoria` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Volcado de datos para la tabla `productos`
 --
 
 INSERT INTO `productos` (`id`, `nombre`, `descripcion`, `precio_normal`, `precio_rebajado`, `cantidad`, `imagen`, `id_categoria`) VALUES
-(11, 'Batman', 'Juguete', 56.00, 52.00, 1, '20230710031343.jpg', 13),
-(12, 'Deadpool', 'juguete', 80.00, 70.00, 1, '20230710031409.jpg', 13),
-(13, 'Joker', 'juguete', 50.00, 45.00, 1, '20230710031458.jpg', 13),
-(15, 'Tokyo Revengers', 'manga', 45.00, 42.00, 1, '20230710031802.jpg', 11),
-(17, 'Spiderman', 'historieta para niños', 38.00, 35.00, 3, '20230710035005.jpg', 10),
-(19, 'Gohan - Dragon Ball Z', 'JUGUETE', 117.00, 110.00, 2, '20230710040902.jpg', 12),
-(20, 'Thanos', 'Mundo Marvel', 85.00, 80.00, 3, '20230713233338.jpg', 13),
-(21, 'Alphonse Elric', 'Full Metal Alchemist - Anime', 75.00, 0.00, 1, '20230713233659.jpg', 13),
-(22, 'Shikamaru', 'Naruto Shipuden - Anime', 64.00, 60.00, 2, '20230713234715.jpg', 13),
-(26, 'Mike Wazowski', 'monster university', 65.00, 65.00, 2, '20230728000143.jpg', 13),
-(27, 'Johny Bravo', 'Cartoom', 45.00, 40.00, 1, '20230728000243.jpg', 13),
-(28, 'Tanjiro', 'Demon Slayer - Anime', 85.00, 85.00, 4, '20230728000437.jpg', 13),
-(29, 'Dexter', 'Cartoom', 64.00, 50.00, 2, '20230728000845.jpg', 13),
-(30, 'Muzan Kibutsuji', 'Demon Slayer - Anime', 95.00, 90.00, 3, '20230728000937.jpg', 13),
-(31, 'Goku', 'Dragon Ball GT - Anime', 125.00, 125.00, 2, '20230728002338.jpg', 12),
-(32, 'Meliodas', 'Nanatzu No Taizai - Anime', 105.00, 100.00, 1, '20230728002436.jpg', 12),
-(33, 'Giyu Tomioka', 'Demon Slayer - Anime', 300.00, 300.00, 1, '20230728070958.jpg', 12),
-(34, 'Cell', 'Dragon Ball Z', 379.00, 379.00, 3, '20230728132928.jpg', 12),
-(35, 'Star-Lord', 'Marvel Legends Series Guardians of the Galaxy', 159.00, 159.00, 1, '20230728133229.jpg', 12),
-(36, 'Spider-Verse', 'Marvel Legends Series Into the Spider-Verse - Spider-Man Noir & Ham', 229.00, 229.00, 2, '20230728133354.jpg', 12),
-(37, 'Spider Man', 'Marvel Legends Gamerverse - Spider-Man 2', 199.90, 199.90, 2, '20230728133630.jpg', 12),
-(38, 'NARUTO UZUMAKI \"KURAMA LINK MODE\"', 'NARUTO SHIPPUDEN - NARUTO UZUMAKI \"KURAMA LINK MODE\" - SH FIGUARTS', 240.00, 240.00, 2, '20230728134323.jpg', 12),
-(39, 'BYAKUYA KICHIKI', 'BLEACH - BYAKUYA KICHIKI - SH FIGUARTS', 199.90, 199.90, 3, '20230728134538.jpg', 12),
-(40, 'WONDER WOMAN', 'IRON STUDIOS MINICO - WONDER WOMAN', 139.00, 139.00, 2, '20230728135441.jpg', 12),
-(41, 'Cooler (Final Form)', 'Bandai Ichibansho Dragon Ball Z: Back to the Film Estatua - Cooler (Final Form)', 399.90, 399.90, 3, '20230729131840.jpg', 12),
-(42, 'Golden Frieza', 'Bandai Ichibansho Estatua Dragon Ball Super - Golden Frieza', 299.90, 299.90, 2, '20230729132053.jpg', 12),
-(43, 'Sasuke Uchiha', 'Figura Sasuke Uchiha Naruto Shippuden Grandista Nero', 299.90, 299.90, 2, '20230729132701.jpg', 12);
+(44, 'Cama Telescopica 2plz', 'Cama Telescopica 2plz \r\n*Incluye 2 veladores ', '1400.00', '1350.00', 100, '20241016054511.jpg', 15),
+(45, 'Cama Italiana Alta 2plz', 'Cama Telescopica 2plz \r\n*Incluye 3 veladores completos', '2000.00', '1900.00', 100, '20241016054630.jpg', 15),
+(46, 'Cama Americana 2plz', 'Tarima + Cabecera modelos al gusto y personalizados', '700.00', '699.00', 100, '20241016055023.jpg', 16),
+(47, 'Colchn Royal Prince KING KING KING', 'Colchon Royal Prince Paraiso\r\n10 años de Garantia\r\nResortes Pocket', '1400.00', '1399.00', 100, '20241016055230.jpg', 17);
 
 -- --------------------------------------------------------
 
@@ -167,16 +206,17 @@ CREATE TABLE `usuarios` (
   `usuario` varchar(20) NOT NULL,
   `nombre` varchar(100) NOT NULL,
   `clave` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Volcado de datos para la tabla `usuarios`
 --
 
 INSERT INTO `usuarios` (`id`, `usuario`, `nombre`, `clave`) VALUES
-(1, 'admin', 'Rodrigo Nina', '21232f297a57a5a743894a0e4a801fc3'),
 (6, 'dann', 'Dann Chipana', '10e7b30d8f61e75d28a03ec651f8b112'),
-(7, 'breyan', 'Breyan Huiza', 'b8aad3de4c6132e1837461f085d72d67');
+(8, 'Cupteax', 'Marina', 'f5d430db9e604e4dd263f317768c81b8'),
+(9, 'Dann1315', 'Dann', 'e70e845507b2d64b6b5ab6d21147018f'),
+(10, 'tan', 'aji', 'd5e2fbef30a4eb668a203060ec8e5eef');
 
 -- --------------------------------------------------------
 
@@ -190,7 +230,7 @@ CREATE TABLE `valoraciones` (
   `id_cliente` int(11) DEFAULT NULL,
   `valoracion` decimal(3,1) NOT NULL,
   `comentario` text DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -203,7 +243,7 @@ CREATE TABLE `ventas` (
   `fecha_venta` date NOT NULL,
   `total` decimal(10,2) NOT NULL,
   `id_cliente` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -215,7 +255,7 @@ CREATE TABLE `ventas_metodos_pago` (
   `id_venta_metodo_pago` int(11) NOT NULL,
   `id_venta` int(11) DEFAULT NULL,
   `id_metodo_pago` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Índices para tablas volcadas
@@ -261,6 +301,28 @@ ALTER TABLE `inventario`
 --
 ALTER TABLE `metodos_pago`
   ADD PRIMARY KEY (`id_metodo_pago`);
+
+--
+-- Indices de la tabla `pedidos`
+--
+ALTER TABLE `pedidos`
+  ADD PRIMARY KEY (`id_pedido`);
+
+--
+-- Indices de la tabla `pedidos_clientes`
+--
+ALTER TABLE `pedidos_clientes`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `id_pedido` (`id_pedido`),
+  ADD KEY `id_cliente` (`id_cliente`);
+
+--
+-- Indices de la tabla `pedidos_productos`
+--
+ALTER TABLE `pedidos_productos`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `id_pedido` (`id_pedido`),
+  ADD KEY `id_producto` (`id_producto`);
 
 --
 -- Indices de la tabla `productos`
@@ -312,13 +374,13 @@ ALTER TABLE `carrito_compras`
 -- AUTO_INCREMENT de la tabla `categorias`
 --
 ALTER TABLE `categorias`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT de la tabla `clientes`
 --
 ALTER TABLE `clientes`
-  MODIFY `id_cliente` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_cliente` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT de la tabla `detalle_ventas`
@@ -339,16 +401,34 @@ ALTER TABLE `metodos_pago`
   MODIFY `id_metodo_pago` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT de la tabla `pedidos`
+--
+ALTER TABLE `pedidos`
+  MODIFY `id_pedido` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT de la tabla `pedidos_clientes`
+--
+ALTER TABLE `pedidos_clientes`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `pedidos_productos`
+--
+ALTER TABLE `pedidos_productos`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT de la tabla `productos`
 --
 ALTER TABLE `productos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
 
 --
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT de la tabla `valoraciones`
@@ -391,6 +471,20 @@ ALTER TABLE `detalle_ventas`
 --
 ALTER TABLE `inventario`
   ADD CONSTRAINT `inventario_ibfk_1` FOREIGN KEY (`id_producto`) REFERENCES `productos` (`id`) ON DELETE CASCADE;
+
+--
+-- Filtros para la tabla `pedidos_clientes`
+--
+ALTER TABLE `pedidos_clientes`
+  ADD CONSTRAINT `pedidos_clientes_ibfk_1` FOREIGN KEY (`id_pedido`) REFERENCES `pedidos` (`id_pedido`) ON DELETE CASCADE,
+  ADD CONSTRAINT `pedidos_clientes_ibfk_2` FOREIGN KEY (`id_cliente`) REFERENCES `clientes` (`id_cliente`) ON DELETE CASCADE;
+
+--
+-- Filtros para la tabla `pedidos_productos`
+--
+ALTER TABLE `pedidos_productos`
+  ADD CONSTRAINT `pedidos_productos_ibfk_1` FOREIGN KEY (`id_pedido`) REFERENCES `pedidos` (`id_pedido`) ON DELETE CASCADE,
+  ADD CONSTRAINT `pedidos_productos_ibfk_2` FOREIGN KEY (`id_producto`) REFERENCES `productos` (`id`) ON DELETE CASCADE;
 
 --
 -- Filtros para la tabla `productos`
