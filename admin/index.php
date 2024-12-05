@@ -1,6 +1,9 @@
 <?php
-require_once "../config/conexion.php";
+// Empezar la sesión al inicio de todo el archivo PHP
 session_start();
+
+// Incluir la conexión a la base de datos
+require_once "../config/conexion.php";
 
 if (isset($_POST['usuario']) && isset($_POST['clave'])) {
     $usuario = $_POST['usuario'];
