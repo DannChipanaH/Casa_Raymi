@@ -8,6 +8,7 @@ if (!$mysql_url) {
     $user = "root";
     $clave = "";
     $bd = "bd_raymi";
+    $port = 3306;  // Puerto predeterminado para MySQL local
 } else {
     // Si la variable MYSQL_URL está configurada, descomponer la URL
     $parts = parse_url($mysql_url);
@@ -15,10 +16,11 @@ if (!$mysql_url) {
     $user = $parts['user'];
     $clave = $parts['pass'];
     $bd = ltrim($parts['path'], '/');  // Elimina la barra inicial de la base de datos
+    $port = $parts['port'] ?? 3306;    // Usa el puerto de la URL o 3306 como predeterminado
 }
 
 // Establecer la conexión a la base de datos
-$conexion = mysqli_connect($host, $user, $clave, $bd);
+$conexion = mysqli_connect($host, $user, $clave, $bd, $port);
 
 // Verificar si hay algún error en la conexión
 if (mysqli_connect_errno()) {
@@ -26,18 +28,9 @@ if (mysqli_connect_errno()) {
     exit();
 }
 
-// Seleccionar la base de datos
-mysqli_select_db($conexion, $bd) or die("No se encuentra la base de datos");
-
 // Establecer la codificación de caracteres
 mysqli_set_charset($conexion, "utf8");
 
-// Obtener el puerto asignado por Railway o usar el valor predeterminado
-$port = getenv('PORT') ? getenv('PORT') : 8080;  // Usa 8080 como valor predeterminado si no está configurado
-
-// Iniciar el servidor PHP en el puerto dinámico
-exec("php -S 0.0.0.0:$port");
-
 // Confirmar que la conexión fue exitosa
-echo "Conexión exitosa a la base de datos y servidor en el puerto $port";
+echo "Conexión exitosa a la base de datos";
 ?>
