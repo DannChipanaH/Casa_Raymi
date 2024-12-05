@@ -4,28 +4,33 @@ session_start();
 
 if (isset($_POST['usuario']) && isset($_POST['clave'])) {
     $usuario = $_POST['usuario'];
-    $clave = md5($_POST['clave']); // Encriptar la clave ingresada
+    $clave = $_POST['clave']; // No encriptar la clave ingresada
 
     // Preparar la consulta para evitar inyecciones SQL
-    $query = mysqli_prepare($conexion, "SELECT id, nombre FROM usuarios WHERE usuario = ? AND clave = ?");
-    mysqli_stmt_bind_param($query, "ss", $usuario, $clave);
+    $query = mysqli_prepare($conexion, "SELECT id, nombre, clave FROM usuarios WHERE usuario = ?");
+    mysqli_stmt_bind_param($query, "s", $usuario);
     mysqli_stmt_execute($query);
     mysqli_stmt_store_result($query);
 
     // Verificar si hay coincidencia
     if (mysqli_stmt_num_rows($query) > 0) {
-        mysqli_stmt_bind_result($query, $id, $nombre);
+        mysqli_stmt_bind_result($query, $id, $nombre, $storedClave);
         mysqli_stmt_fetch($query);
 
-        // Configurar variables de sesión
-        $_SESSION['active'] = true;
-        $_SESSION['id'] = $id;
-        $_SESSION['nombre'] = $nombre;
-        $_SESSION['user'] = $usuario;
+        // Comparar la clave ingresada con la almacenada
+        if ($clave == $storedClave) { // Comparación directa
+            // Configurar variables de sesión
+            $_SESSION['active'] = true;
+            $_SESSION['id'] = $id;
+            $_SESSION['nombre'] = $nombre;
+            $_SESSION['user'] = $usuario;
 
-        // Redirigir al área de productos
-        header('Location: productos.php');
-        exit;
+            // Redirigir al área de productos
+            header('Location: productos.php');
+            exit;
+        } else {
+            $error = "Usuario o clave incorrectos.";
+        }
     } else {
         $error = "Usuario o clave incorrectos.";
     }
