@@ -1,21 +1,16 @@
 <?php
-// Leer la URL de conexión desde la variable de entorno
-$mysql_url = getenv('MYSQL_URL');
+// La URL de conexión proporcionada por Railway
+$mysql_url = "mysql://root:vWfgUwnhMryZlCfcavTynaiRNqdZRIMr@autorack.proxy.rlwy.net:39272/railway";
 
-// Validar si la URL está disponible
-if ($mysql_url) {
-    // Descomponer la URL en partes
-    $parts = parse_url($mysql_url);
+// Descomponer la URL en partes usando parse_url
+$parts = parse_url($mysql_url);
 
-    // Extraer los datos de conexión
-    $host = $parts['host'];               // Host: mysql.railway.internal
-    $user = $parts['user'];               // Usuario: root
-    $password = $parts['pass'];           // Contraseña: vWfgUwnhMryZlCfcavTynaiRNqdZRIMr
-    $db = ltrim($parts['path'], '/');     // Base de datos: railway
-    $port = $parts['port'] ?? 3306;       // Puerto: 3306 (por defecto)
-} else {
-    die("No se encontró la variable de entorno MYSQL_URL");
-}
+// Extraer los datos de conexión
+$host = $parts['host'];           // autorack.proxy.rlwy.net
+$user = $parts['user'];           // root
+$password = $parts['pass'];       // Contraseña que tienes en la URL
+$db = ltrim($parts['path'], '/'); // railway (nombre de la base de datos)
+$port = $parts['port'];           // 39272
 
 // Establecer la conexión a la base de datos
 $conexion = mysqli_connect($host, $user, $password, $db, $port);
