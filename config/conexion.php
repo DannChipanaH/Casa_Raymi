@@ -1,35 +1,29 @@
 <?php
-// Leer la variable de entorno MYSQL_URL para la conexión a la base de datos
+// Leer la URL de conexión desde la variable de entorno
 $mysql_url = getenv('MYSQL_URL');
 
-// Si la variable no está configurada, utilizar valores por defecto
-if (!$mysql_url) {
-    $host = "localhost";
-    $user = "root";
-    $clave = "";
-    $bd = "bd_raymi";
-    $port = 3306;  // Puerto predeterminado para MySQL local
-} else {
-    // Si la variable MYSQL_URL está configurada, descomponer la URL
+// Validar si la URL está disponible
+if ($mysql_url) {
+    // Descomponer la URL en partes
     $parts = parse_url($mysql_url);
-    $host = $parts['host'];
-    $user = $parts['user'];
-    $clave = $parts['pass'];
-    $bd = ltrim($parts['path'], '/');  // Elimina la barra inicial de la base de datos
-    $port = $parts['port'] ?? 3306;    // Usa el puerto de la URL o 3306 como predeterminado
+
+    // Extraer los datos de conexión
+    $host = $parts['host'];               // Host: mysql.railway.internal
+    $user = $parts['user'];               // Usuario: root
+    $password = $parts['pass'];           // Contraseña: vWfgUwnhMryZlCfcavTynaiRNqdZRIMr
+    $db = ltrim($parts['path'], '/');     // Base de datos: railway
+    $port = $parts['port'] ?? 3306;       // Puerto: 3306 (por defecto)
+} else {
+    die("No se encontró la variable de entorno MYSQL_URL");
 }
 
 // Establecer la conexión a la base de datos
-$conexion = mysqli_connect($host, $user, $clave, $bd, $port);
+$conexion = mysqli_connect($host, $user, $password, $db, $port);
 
-// Verificar si hay algún error en la conexión
-if (mysqli_connect_errno()) {
-    echo "No se pudo conectar a la base de datos: " . mysqli_connect_error();
-    exit();
+// Verificar si hay errores en la conexión
+if (!$conexion) {
+    die("Error al conectar a la base de datos: " . mysqli_connect_error());
 }
-
-// Establecer la codificación de caracteres
-mysqli_set_charset($conexion, "utf8");
 
 // Confirmar que la conexión fue exitosa
 echo "Conexión exitosa a la base de datos";
