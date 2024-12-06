@@ -3,6 +3,7 @@ require_once "../config/conexion.php";
 
 if (isset($_POST)) {
     if (!empty($_POST)) {
+        $id = $_POST['id']; // Obtener el ID ingresado
         $nombre = $_POST['nombre'];
         $cantidad = $_POST['cantidad'];
         $descripcion = $_POST['descripcion'];
@@ -15,15 +16,26 @@ if (isset($_POST)) {
         $fecha = date("YmdHis");
         $foto = $fecha . ".jpg";
         $destino = "../assets/img/" . $foto;
-        $query = mysqli_query($conexion, "INSERT INTO productos(nombre, descripcion, precio_normal, precio_rebajado, cantidad, imagen, id_categoria) VALUES ('$nombre', '$descripcion', '$p_normal', '$p_rebajado', $cantidad, '$foto', $categoria)");
+
+        // Actualización de la consulta para incluir el ID
+        $query = mysqli_query(
+            $conexion,
+            "INSERT INTO productos(id, nombre, descripcion, precio_normal, precio_rebajado, cantidad, imagen, id_categoria) 
+            VALUES ($id, '$nombre', '$descripcion', '$p_normal', '$p_rebajado', $cantidad, '$foto', $categoria)"
+        );
+
         if ($query) {
             if (move_uploaded_file($tmpname, $destino)) {
                 header('Location: productos.php');
+                exit;
             }
+        } else {
+            echo "Error al registrar el producto.";
         }
     }
 }
-include("includes/header.php"); ?>
+include("includes/header.php");
+?>
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1 class="h3 mb-0 text-gray-800">Productos</h1>
     <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" id="abrirProducto"><i class="fas fa-plus fa-sm text-white-50"></i> Nuevo</a>
@@ -73,8 +85,6 @@ include("includes/header.php"); ?>
     </div>
 </div>
 
-
-
 <div id="productos" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -89,6 +99,12 @@ include("includes/header.php"); ?>
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
+                                <label for="id">ID</label>
+                                <input id="id" class="form-control" type="number" name="id" placeholder="ID del producto" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
                                 <label for="nombre">Nombre</label>
                                 <input id="nombre" class="form-control" type="text" name="nombre" placeholder="Nombre" required>
                             </div>
@@ -96,7 +112,7 @@ include("includes/header.php"); ?>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="cantidad">Cantidad</label>
-                                <input id="cantidad" class="form-control" type="text" name="cantidad" placeholder="Cantidad" required>
+                                <input id="cantidad" class="form-control" type="number" name="cantidad" placeholder="Cantidad" required>
                             </div>
                         </div>
                         <div class="col-md-12">
@@ -142,6 +158,5 @@ include("includes/header.php"); ?>
         </div>
     </div>
 </div>
-
 
 <?php include("includes/footer.php"); ?>
